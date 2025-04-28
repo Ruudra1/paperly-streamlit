@@ -8,7 +8,13 @@ import faiss
 import numpy as np
 from sentence_transformers import SentenceTransformer
 from huggingface_hub import login
-# login(token=os.getenv("HUGGINGFACE_TOKEN"))
+
+@st.cache_resource
+def load_embedding_model():
+    return SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+
+embedding_model = load_embedding_model()
+embedding_dim = 384  # dimension for 'all-MiniLM-L6-v2'
 
 # --- Streamlit App ---
 st.set_page_config(page_title="Paperly - Research Paper Assistant", page_icon="🧠")
@@ -60,13 +66,6 @@ uploaded_file = st.file_uploader("Upload your Research Paper (PDF)", type=["pdf"
 # Setup Groq client
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 client = Groq(api_key=GROQ_API_KEY)
-
-@st.cache_resource
-def load_embedding_model():
-    return SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-
-embedding_model = load_embedding_model()
-embedding_dim = 384  # dimension for 'all-MiniLM-L6-v2'
 
 # Initialize session state for FAISS index, stored chunks, and paper text
 if "index" not in st.session_state:
