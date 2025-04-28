@@ -153,6 +153,8 @@ def summarize_paper():
         st.error(f"Error during summarization: {e}")
         return None
 
+import tempfile
+
 if uploaded_file is not None:
     # Detect if a new paper was uploaded
     if uploaded_file.name != st.session_state.uploaded_filename:
@@ -171,14 +173,22 @@ if uploaded_file is not None:
             st.session_state.paper_text = paper_text
             build_faiss_index(paper_text)
 
-        # Display the PDF preview
+        st.success("Paper processed and stored successfully!")
+
+        # --- New: Display the PDF Preview using tempfile ---
         st.subheader("Preview of Uploaded Paper 📄")
-        uploaded_file.seek(0)  # reset file pointer before reading
-        base64_pdf = base64.b64encode(uploaded_file.read()).decode('utf-8')
+
+        # Save uploaded file to a temporary file
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
+            tmp_file.write(uploaded_file.getbuffer())
+            tmp_file_path = tmp_file.name
+
+        # Read file again for base64 embedding
+        with open(tmp_file_path, "rb") as f:
+            base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+
         pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
-
-        st.success("Paper processed and stored successfully!")
 
 if st.session_state.index.ntotal > 0:
     if st.button("Summarize Paper ✨"):
