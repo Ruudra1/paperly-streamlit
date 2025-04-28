@@ -63,10 +63,6 @@ except Exception as e:
 
 uploaded_file = st.file_uploader("Upload your Research Paper (PDF)", type=["pdf"])
 
-# Setup Groq client
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-client = Groq(api_key=GROQ_API_KEY)
-
 # Initialize session state for FAISS index, stored chunks, and paper text
 if "index" not in st.session_state:
     st.session_state.index = faiss.IndexFlatL2(embedding_dim)
