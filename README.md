@@ -10,10 +10,9 @@ A Streamlit app that leverages AI to provide **research paper summarization**, *
 1. [🚀 Features](#-features)  
 2. [🛠️ Technologies](#️-technologies)  
 3. [📦 Installation](#-installation)  
-4. [▶️ Usage](#️-usage)  
-5. [🤝 Contributing](#-contributing)  
-6. [📜 License](#-license)  
-7. [✉️ Contact](#️-contact)  
+4. [▶️ Usage](#️-usage)   
+5. [📜 License](#-license)  
+6. [✉️ Contact](#️-contact)  
 
 ---
 
@@ -64,6 +63,10 @@ cp .env.example .env
 # GEMINI_API_KEY=your_gemini_pro_key
 ```
 
+## 📜 License
+
+This project is distributed under the MIT License.
+See the full text in LICENSE for details.
 
 ## ▶️ Usage
 
@@ -91,4 +94,4 @@ For questions, feedback, or partnership inquiries, reach out to the Paperly team
     
 -   **Mahitha Borra** – bslmahitha@gmail.com
     
--   **Pancham Desai** – 
+-   **Pancham Desai** – panchamdesai847@gmail.com
