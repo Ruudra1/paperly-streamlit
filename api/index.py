@@ -19,11 +19,10 @@ from pydantic import BaseModel
 
 
 def _ensure_temp_dir():
-    tmp_dir = Path(os.environ.get("TMPDIR", "")) if os.environ.get("TMPDIR") else None
-    if not tmp_dir or not tmp_dir.exists() or not tmp_dir.is_dir():
-        tmp_dir = Path(__file__).resolve().parent / ".tmp"
-        tmp_dir.mkdir(parents=True, exist_ok=True)
-        os.environ["TMPDIR"] = str(tmp_dir)
+    # On Vercel, only /tmp is writable
+    tmp_dir = Path("/tmp")
+    tmp_dir.mkdir(parents=True, exist_ok=True)
+    os.environ["TMPDIR"] = str(tmp_dir)
     tempfile.tempdir = str(tmp_dir)
 
 
