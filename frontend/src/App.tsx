@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 
 type ChatMessage = { role: 'user' | 'assistant'; content: string }
 
@@ -190,6 +191,7 @@ export default function App() {
       <footer className="footer">
         Backend: {API_BASE}
       </footer>
+      <Analytics />
     </div>
   )
 }
