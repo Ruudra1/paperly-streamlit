@@ -163,6 +163,6 @@ See the full text in LICENSE for details.
 
 For questions, feedback, or partnership inquiries, reach out to the Paperly team:
 
-- **Ruudra Patel** – ruudra.patel@gmail.com
+- **Ruudra Patel** – ruudrapatel01@gmail.com
 - **Mahitha Borra** – bslmahitha@gmail.com
 - **Pancham Desai** – panchamdesai847@gmail.com
