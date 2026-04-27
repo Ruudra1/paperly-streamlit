@@ -229,7 +229,7 @@ class SummarizeResponse(BaseModel):
     summary: str
 
 
-@app.get("/health")
+@app.get("/api/health")
 def health():
     logger.info("health.check")
     return {"ok": True}
