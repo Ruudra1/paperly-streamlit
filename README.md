@@ -1,13 +1,13 @@
 
 # Paperly: Research Paper Assistant
 
-[![Live Demo](https://img.shields.io/badge/demo-online-green)](ADD_YOUR_VERCEL_LINK_HERE) [![License: MIT](https://img.shields.io/badge/License-MIT-blue)](LICENSE) [![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)
+[![Live Demo](https://img.shields.io/badge/demo-online-green)]((https://paperly-streamlit.vercel.app/)) [![License: MIT](https://img.shields.io/badge/License-MIT-blue)](LICENSE) [![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)
 
 A web app that leverages AI to provide **research paper summarization** and **contextual Q&A** in one intuitive interface.
 
 ## 📸 Screenshot
 
-![Paperly Screenshot](ADD_YOUR_SCREENSHOT_IMAGE_HERE)
+![Paperly Screenshot](paperly-streamlit/screenshot/ss1.png)
 
 ---
 
