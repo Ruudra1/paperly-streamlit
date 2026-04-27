@@ -4,7 +4,7 @@ import { SpeedInsights } from '@vercel/speed-insights/react'
 
 type ChatMessage = { role: 'user' | 'assistant'; content: string }
 
-const API_BASE = (import.meta as any).env?.VITE_API_BASE ?? 'http://127.0.0.1:8080'
+const API_BASE = (import.meta as any).env?.VITE_API_BASE ?? ''
 
 export default function App() {
   const [file, setFile] = useState<File | null>(null)

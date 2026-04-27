@@ -1,0 +1,11 @@
+faiss-cpu
+PyMuPDF>=1.22
+groq
+numpy>=1.23,<2
+scikit-learn>=1.2
+pandas>=2.2
+requests>=2.31
+fastapi>=0.110
+uvicorn[standard]>=0.27
+python-multipart>=0.0.9
+python-dotenv>=1.0
