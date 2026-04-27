@@ -1,0 +1,24 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Env
+.env
+
+# Python build
+*.egg-info/
+dist/
+build/
+
+# Frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# Misc
+.DS_Store
+
+# App temp
+.tmp/
+backend/.tmp/

@@ -1,12 +1,14 @@
 
-# Paperly: Research Paper Assistant  
-[![Live Demo](https://img.shields.io/badge/demo-online-green)](https://paperly.streamlit.app/) [![License: MIT](https://img.shields.io/badge/License-MIT-blue)](LICENSE) [![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)  
+# Paperly: Research Paper Assistant
 
-A Streamlit app that leverages AI to provide **research paper summarization**, **contextual Q&A**, and **highlight extraction** in one intuitive interface.
+[![Live Demo](https://img.shields.io/badge/demo-online-green)](https://paperly.streamlit.app/) [![License: MIT](https://img.shields.io/badge/License-MIT-blue)](LICENSE) [![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)
+
+A web app that leverages AI to provide **research paper summarization** and **contextual Q&A** in one intuitive interface.
 
 ---
 
 ## 📖 Table of Contents
+
 1. [🚀 Features](#-features)  
 2. [🛠️ Technologies](#️-technologies)  
 3. [📦 Installation](#-installation)  
@@ -29,13 +31,14 @@ A Streamlit app that leverages AI to provide **research paper summarization**, *
 
 | Tool / Library     | Purpose                                   |
 | ------------------ | ----------------------------------------- |
-| **Python 3.8+**    | Core language                            |
-| **Streamlit**      | Front-end web framework                  |
-| **LangChain**      | LLM orchestration pipelines              |
-| **Gemini Pro** & **OpenAI API** | LLM backends                     |
-| **NLTK**           | Text preprocessing                       |
-| **PyPDF2**         | PDF parsing & text extraction            |
-| **python-dotenv**  | Environment variable management          |
+| **Python 3.8+**    | Backend language                          |
+| **FastAPI**        | Backend API                               |
+| **FAISS**          | Vector search index                       |
+| **SentenceTransformers** | Embeddings                          |
+| **Groq**           | LLM backend (Llama 70B)                   |
+| **React (Vite)**   | Frontend UI                               |
+| **PyMuPDF**        | PDF parsing & text extraction             |
+| **python-dotenv**  | Environment variable management           |
 
 ---
 
@@ -70,28 +73,50 @@ See the full text in LICENSE for details.
 
 ## ▶️ Usage
 
-1. **Start the Streamlit app**  
+1. **Configure environment**
+
    ```bash
-   streamlit run app.py
+   cp .env.example .env
+   # edit .env and set GROQ_API_KEY
    ```
- 2. **Open your browser**
-    Navigate to:
-    ```bash
-    http://localhost:8501
-    ```
-3.  **Upload & interact**
-    
-    -   Click “Browse files” or drag-and-drop your PDF
-	-   Process it and run either summary or chat with Paperly
-    -   Use the “Ask a question” box for contextual Q&A
+
+2. **Start the backend API**
+
+   ```bash
+   cd backend
+   ./run.sh
+   ```
+   Backend runs at:
+
+   ```text
+   http://localhost:8000
+   ```
+
+3. **Start the React frontend**
+
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+   Frontend runs at:
+
+   ```text
+   http://localhost:5173
+   ```
+
+4. **Upload & interact**
+   - Upload a PDF
+   - Click **Process Paper**
+   - Use **Summarize** or **Chat**
 
 
 ## **✉️ Contact**
 
 For questions, feedback, or partnership inquiries, reach out to the Paperly team:
 
--   **Ruudra Patel** – ruudra.patel@gmail.com
-    
--   **Mahitha Borra** – bslmahitha@gmail.com
-    
--   **Pancham Desai** – panchamdesai847@gmail.com
+- **Ruudra Patel** – ruudra.patel@gmail.com
+
+- **Mahitha Borra** – bslmahitha@gmail.com
+
+- **Pancham Desai** – panchamdesai847@gmail.com

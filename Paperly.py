@@ -3,11 +3,21 @@ import base64
 import streamlit as st
 import fitz  # PyMuPDF
 import re
+import tempfile
+from pathlib import Path
 from groq import Groq
 import faiss
 import numpy as np
 from sentence_transformers import SentenceTransformer
-from huggingface_hub import login
+
+
+def _ensure_temp_dir():
+    tmp_dir = Path(os.environ.get("TMPDIR", "")) if os.environ.get("TMPDIR") else None
+    if not tmp_dir or not tmp_dir.exists() or not tmp_dir.is_dir():
+        tmp_dir = Path(__file__).resolve().parent / ".tmp"
+        tmp_dir.mkdir(parents=True, exist_ok=True)
+        os.environ["TMPDIR"] = str(tmp_dir)
+    tempfile.tempdir = str(tmp_dir)
 
 @st.cache_resource
 def load_embedding_model():
@@ -16,27 +26,20 @@ def load_embedding_model():
 embedding_model = load_embedding_model()
 embedding_dim = 384  # dimension for 'all-MiniLM-L6-v2'
 
+_ensure_temp_dir()
+
 # --- Streamlit App ---
 st.set_page_config(page_title="Paperly - Research Paper Assistant", page_icon="🧠")
 st.title("📚 Paperly - Research Paper Assistant")
 st.write("Upload a research paper in PDF format, store chunks in FAISS, and interact intelligently with Paperly!")
 
-# -------------- USER INPUT SECTION --------------
-st.subheader("🔑 Enter your API Keys to proceed")
-
-# Text input for Groq API Key
-user_groq_api_key = st.text_input("Enter your GROQ API Key:", type="password")
-
-# Text input for HuggingFace Token
-user_hf_token = st.text_input("Enter your HuggingFace Token:", type="password")
-
-# Check if both API keys entered
-if not user_groq_api_key or not user_hf_token:
-    st.warning("⚠️ Please enter both GROQ API Key and HuggingFace Token above to unlock functionality.")
+# -------------- API KEY CONFIG --------------
+groq_api_key = os.environ.get("GROQ_API_KEY")
+if not groq_api_key:
+    st.error("Missing GROQ_API_KEY environment variable.")
     st.stop()
 
-# Initialize clients
-client = Groq(api_key=user_groq_api_key)
+client = Groq(api_key=groq_api_key)
 
 # Initialize session state
 if "index" not in st.session_state:
@@ -53,13 +56,6 @@ if "messages" not in st.session_state:
 
 if "uploaded_filename" not in st.session_state:
     st.session_state.uploaded_filename = None
-
-# Huggingface login
-try:
-    login(token=user_hf_token)
-except Exception as e:
-    st.error(f"Error logging into HuggingFace: {e}")
-    st.stop()
 
 uploaded_file = st.file_uploader("Upload your Research Paper (PDF)", type=["pdf"])
 
@@ -152,8 +148,6 @@ def summarize_paper():
     except Exception as e:
         st.error(f"Error during summarization: {e}")
         return None
-
-import tempfile
 
 if uploaded_file is not None:
     # Detect if a new paper was uploaded
