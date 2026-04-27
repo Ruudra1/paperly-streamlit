@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 
 type ChatMessage = { role: 'user' | 'assistant'; content: string }
 
@@ -192,6 +193,7 @@ export default function App() {
         Backend: {API_BASE}
       </footer>
       <Analytics />
+      <SpeedInsights />
     </div>
   )
 }
