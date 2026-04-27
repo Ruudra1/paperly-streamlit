@@ -7,7 +7,6 @@ from uuid import uuid4
 import logging
 import time
 
-import faiss
 import fitz  # PyMuPDF
 import numpy as np
 import requests
@@ -101,28 +100,32 @@ def extract_clean_text_from_pdf_bytes(pdf_bytes: bytes) -> str:
 
 class SessionState:
     def __init__(self):
-        self.index = faiss.IndexFlatL2(EMBEDDING_DIM)
+        self.embeddings: np.ndarray = None
         self.chunks: List[str] = []
 
 
 SESSIONS: Dict[str, SessionState] = {}
 
 
-def build_faiss_index(session: SessionState, paper_text: str) -> None:
+def build_index(session: SessionState, paper_text: str) -> None:
     chunks = chunk_text(paper_text)
     if not chunks:
         raise ValueError("No text chunks produced from PDF")
     embeddings = embed_text(chunks)
-    session.index.add(np.array(embeddings))
+    session.embeddings = np.array(embeddings)
     session.chunks = chunks
 
 
 def retrieve_top_chunks(session: SessionState, user_query: str, top_k: int = 3) -> str:
-    if session.index.ntotal == 0:
+    if session.embeddings is None or len(session.embeddings) == 0:
         return ""
-    query_embedding = embed_text([user_query])
-    distances, indices = session.index.search(np.array(query_embedding), top_k)
-    retrieved = [session.chunks[idx] for idx in indices[0] if 0 <= idx < len(session.chunks)]
+    query_embedding = embed_text([user_query])[0]
+    # Cosine similarity using numpy
+    dot_product = np.dot(session.embeddings, query_embedding)
+    norms = np.linalg.norm(session.embeddings, axis=1) * np.linalg.norm(query_embedding)
+    similarities = dot_product / norms
+    top_indices = np.argsort(similarities)[-top_k:][::-1]
+    retrieved = [session.chunks[idx] for idx in top_indices if 0 <= idx < len(session.chunks)]
     return "\n\n".join(retrieved)
 
 
@@ -258,10 +261,10 @@ async def process_paper(file: UploadFile = File(...)):
     session_id = str(uuid4())
     session = SessionState()
     try:
-        build_faiss_index(session, text)
-        logger.info("process.faiss_index_built session_id=%s chunks=%s ntotal=%s", session_id, len(session.chunks), session.index.ntotal)
+        build_index(session, text)
+        logger.info("process.index_built session_id=%s chunks=%s", session_id, len(session.chunks))
     except Exception as e:
-        logger.exception("process.faiss_build_failed session_id=%s", session_id)
+        logger.exception("process.index_build_failed session_id=%s", session_id)
         raise HTTPException(status_code=400, detail=str(e))
 
     SESSIONS[session_id] = session
