@@ -1,4 +1,12 @@
 import os
+
+# Force libraries to use /tmp on Vercel (read-only filesystem elsewhere)
+os.environ['NLTK_DATA'] = '/tmp/nltk_data'
+os.environ['HF_HOME'] = '/tmp/huggingface'
+os.environ['MPLCONFIGDIR'] = '/tmp/matplotlib'
+os.environ['TRANSFORMERS_CACHE'] = '/tmp/transformers'
+os.environ['HF_DATASETS_CACHE'] = '/tmp/datasets'
+
 import re
 import tempfile
 from pathlib import Path
